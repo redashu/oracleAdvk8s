@@ -253,6 +253,175 @@ c059bfaa849c4d8e4aecaeb3a10c2d9b3d85f5165c66ad3a4d937758128c4d18
 
 ```
 
+### Docker context 
+
+```
+docker  context  create   ashude  --docker host="ssh://oracle@129.146.98.159"
+ashude
+Successfully created context "ashude"
+ fire@ashutoshhs-MacBook-Air  ~  
+ fire@ashutoshhs-MacBook-Air  ~  
+ fire@ashutoshhs-MacBook-Air  ~  docker  context  ls
+NAME                TYPE                DESCRIPTION                               DOCKER ENDPOINT                              KUBERNETES ENDPOINT                         ORCHESTRATOR
+ashude              moby                                                          ssh://oracle@129.146.98.159                                                              
+default *           moby                Current DOCKER_HOST based configuration   unix:///var/run/docker.sock                  https://34.202.42.107:6443 (ashu-project)   swarm
+desktop-linux       moby                                                          unix:///Users/fire/.docker/run/docker.sock                                               
+ fire@ashutoshhs-MacBook-Air  ~  
+
+
+```
+
+### switching context in docker 
+
+```
+docker  images
+REPOSITORY   TAG       IMAGE ID       CREATED        SIZE
+openjdk      latest    3d4c93dc003c   4 days ago     471MB
+ubuntu       latest    d13c942271d6   2 weeks ago    72.8MB
+alpine       latest    c059bfaa849c   2 months ago   5.59MB
+ fire@ashutoshhs-MacBook-Air  ~  docker  context  ls
+NAME                TYPE                DESCRIPTION                               DOCKER ENDPOINT                              KUBERNETES ENDPOINT                         ORCHESTRATOR
+ashude              moby                                                          ssh://oracle@129.146.98.159                                                              
+default *           moby                Current DOCKER_HOST based configuration   unix:///var/run/docker.sock                  https://34.202.42.107:6443 (ashu-project)   swarm
+desktop-linux       moby                                                          unix:///Users/fire/.docker/run/docker.sock                                               
+ fire@ashutoshhs-MacBook-Air  ~  docker  context  use  ashude 
+ashude
+ fire@ashutoshhs-MacBook-Air  ~  docker  images               
+REPOSITORY    TAG       IMAGE ID       CREATED        SIZE
+oraclelinux   8.5       7f20b3bf28af   4 weeks ago    235MB
+alpine        latest    c059bfaa849c   2 months ago   5.59MB
+ fire@ashutoshhs-MacBook-Air  ~  
+
+
+```
+
+### Container creation understanding 
+
+<img src="ccu.png">
+
+### tcp docker context 
+
+```
+docker  context create  newoci --docker  host="tcp://129.146.98.159:2375"
+newoci
+Successfully created context "newoci"
+ fire@ashutoshhs-MacBook-Air  ~  docker context use newoci
+newoci
+ fire@ashutoshhs-MacBook-Air  ~  
+ fire@ashutoshhs-MacBook-Air  ~  docker  images
+Cannot connect to the Docker daemon at tcp://129.146.98.159:2375. Is the docker daemon running?
+ ✘ fire@ashutoshhs-MacBook-Air  ~  
+ ✘ fire@ashutoshhs-MacBook-Air  ~  
+ ✘ fire@ashutoshhs-MacBook-Air  ~  docker  images
+REPOSITORY    TAG       IMAGE ID       CREATED        SIZE
+oraclelinux   8.5       7f20b3bf28af   4 weeks ago    235MB
+alpine        latest    c059bfaa849c   2 months ago   5.59MB
+ fire@ashutoshhs-MacBook-Air  ~  
+ fire@ashutoshhs-MacBook-Air  ~  
+
+```
+
+### creating first container 
+
+<img src="createc.png">
+
+### create and list 
+
+```
+
+ fire@ashutoshhs-MacBook-Air  ~  docker  run  -d -it  --name  ashuc1   oraclelinux:8.5  ping  fb.com 
+e9ca7acbaacff54d12be5dc1d3c73f2d834a926e3bc3a5df81bc076d4c725d51
+ fire@ashutoshhs-MacBook-Air  ~  
+ fire@ashutoshhs-MacBook-Air  ~  docker  ps
+CONTAINER ID   IMAGE             COMMAND         CREATED          STATUS         PORTS     NAMES
+fb08adc22fab   alpine            "ping fb.com"   15 seconds ago   Up 1 second              nikhc1
+e9ca7acbaacf   oraclelinux:8.5   "ping fb.com"   17 seconds ago   Up 4 seconds             ashuc1
+ fire@ashutoshhs-MacBook-Air  ~  
+
+
+```
+
+### list of all states containers 
+
+```
+docker  ps -a
+CONTAINER ID   IMAGE             COMMAND             CREATED              STATUS                     PORTS     NAMES
+9ffe2be65cd3   oraclelinux:8.5   "ping localhost"    About a minute ago   Up 59 seconds                        sukumar_first
+8c577fb67c61   oraclelinux:8.4   "ps"                2 minutes ago        Exited (0) 2 minutes ago             kamleshcont2
+d06ddf42bff4   oraclelinux:8.5   "top"               2 minutes ago        Up 2 minutes                         ananyo3
+4d1da0ac64a3   oraclelinux:8.4   "iostat -xncz"      3 minutes ago        Created                              kamleshcont1
+de34daa93b39   alpine            "ping localhost"    3 minutes ago        Up 3 minutes                         pavan3
+91bf465472f5   alpine            "ping localhost"    3 minutes ago        Up 3 minutes                         nikhc1
+f7faa5240ad7   alpine            "ping localhost"   
+
+```
+
+### to check output of container process
+
+```
+ docker  logs   ashuc1 
+  docker  logs  -f ashuc1
+```
+
+### stop and start 
+
+```
+docker  stop   ashuc1 
+ashuc1
+
+---
+
+docker  start   ashuc1 
+
+```
+
+### remove --
+
+```
+docker  rm  ashuc1 
+ashuc1
+ fire@ashutoshhs-MacBook-Air  ~  
+
+
+```
+
+### access container 
+
+```
+docker  exec  -it  shilpa1  bash 
+[root@f331ccf41d09 /]# 
+[root@f331ccf41d09 /]# cat /etc/os-release 
+NAME="Oracle Linux Server"
+VERSION="8.5"
+ID="ol"
+ID_LIKE="fedora"
+VARIANT="Server"
+VARIANT_ID="server"
+VERSION_ID="8.5"
+PLATFORM_ID="platform:el8"
+PRETTY_NAME="Oracle Linux Server 8.5"
+ANSI_COLOR="0;31"
+CPE_NAME="cpe:/o:oracle:linux:8:5:server"
+HOME_URL="https://linux.oracle.com/"
+BUG_REPORT_URL="https://bugzilla.oracle.com/"
+
+ORACLE_BUGZILLA_PRODUCT="Oracle Linux 8"
+ORACLE_BUGZILLA_PRODUCT_VERSION=8.5
+ORACLE_SUPPORT_PRODUCT="Oracle Linux"
+ORACLE_SUPPORT_PRODUCT_VERSION=8.5
+[root@f331ccf41d09 /]# whoami
+root
+[root@f331ccf41d09 /]# ls
+bin  boot  dev  etc  home  lib  lib64  media  mnt  opt  proc  root  run  sbin  srv  sys  tmp  usr  var
+[root@f331ccf41d09 /]# exit
+exit
+
+
+```
+
+
+
+
 
 
 
