@@ -426,6 +426,16 @@ exit
 
 
 
+# Docker image building 
+
+### dockerfile for sample python code 
+
+<img src="pycode.png">
+
+
+### image building done 
+
+<img src="build.png">
 
 
 
