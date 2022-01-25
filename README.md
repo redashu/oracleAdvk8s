@@ -118,6 +118,61 @@ def920d3ef5d: Download complete
 
 ```
 
+## cgroups 
+
+<img src="cg.png">
+
+### Memory limit for containers --- 
+
+```
+docker stats:?
+
+=====
+
+CONTAINER ID        NAME                CPU %               MEM USAGE / LIMIT     MEM %               NET I/O             BLOCK I/O           PIDS
+1cd6b0fafbb8        jsh                 0.01%               292KiB / 50MiB        0.57%               9.45kB / 8.61kB     0B / 0B             1
+57a5a9a5344a        c2                  0.01%               292KiB / 50MiB        0.57%               11.2kB / 10.3kB     0B / 0B             1
+5b8b342f1501        c1                  0.01%               296KiB / 15.35GiB     0.00%               109kB / 108kB       0B / 0B             1
+37cee877f8b1        kamleshcont1        0.00%               3.461MiB / 15.35GiB   0.02%               1.2kB / 0B          0B / 0B             1
+9f1658386633        kircont             0.01%               5.402MiB / 15.35GiB   0.03%               1.27kB / 0B         0B / 20.5kB         1
+b96225500ef4        ravi2               0.00%               4.863MiB / 15.35GiB   0.03%               1.27kB / 0B         0B / 20.5kB         1
+^C
+[ashu@oraclede pythonapp]$ docker  run -itd --name  c2  --memory 50m  alpine ping  google.com 
+
+
+```
+
+### More cgroups examples 
+
+```
+[ashu@oraclede pythonapp]$ docker  run -itd --name  limio  --device-read-bps /dev/sda:1mb  centos  bash 
+Unable to find image 'centos:latest' locally
+Trying to pull repository docker.io/library/centos ... 
+latest: Pulling from docker.io/library/centos
+a1d0c7532777: Pull complete 
+Digest: sha256:a27fd8080b517143cbbbab9dfb7c8571c40d67d534bbdee55bd6c473f432b177
+Status: Downloaded newer image for centos:latest
+bf29d05a87262bfdb322a48cf00dc916520c551ec2ffeaffc356c9f96cee3934
+[ashu@oraclede pythonapp]$ docker  run --help   |   grep -i device
+      --blkio-weight-device list       Block IO weight (relative device weight) (default [])
+      --device list                    Add a host device to the container
+      --device-cgroup-rule list        Add a rule to the cgroup allowed devices list
+      --device-read-bps list           Limit read rate (bytes per second) from a device (default [])
+      --device-read-iops list          Limit read rate (IO per second) from a device (default [])
+      --device-write-bps list          Limit write rate (bytes per second) to a device (default [])
+      --device-write-iops list         Limit write rate (IO per second) to a device (default [])
+      --gpus gpu-request               GPU devices to add to the container ('all' to pass all GPUs)
+      
+```
+
+### 
+
+```
+ docker  run -itd --name  c3  --memory 50m  --cpus=1  --cpu-shares=20   alpine ping  google.com 
+ 
+```
+
+
 
 
 
