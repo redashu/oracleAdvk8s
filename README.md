@@ -311,7 +311,146 @@ Error response from daemon: Head "https://phx.ocir.io/v2/axmbtg8judkl/tomcat/man
 
 <img src="ent11.png">
 
+# COntainer Networking --- 
 
+<img src="cnet.png">
+
+## Container networking 
+
+<img src="cnet1.png">
+
+### Listing network bridges in docker client 
+
+```
+ 
+[ashu@oraclede alpinetest]$ docker  network   ls
+NETWORK ID          NAME                DRIVER              SCOPE
+603873c5c956        bridge              bridge              local
+56cf7a86615b        host                host                local
+67cb6bee9554        none                null                local
+[ashu@oraclede alpinetest]$ docker  network  inspect  603873c5c956 
+[
+    {
+        "Name": "bridge",
+        "Id": "603873c5c95653480d9d64b7dac09add6e2ad90ef1c0e97d23ba3712b4fefd17",
+        "Created": "2022-01-25T05:14:46.403020622Z",
+        "Scope": "local",
+        "Driver": "bridge",
+        "EnableIPv6": false,
+        "IPAM": {
+            "Driver": "default",
+            "Options": null,
+            "Config": [
+                {
+                    "Subnet": "172.17.0.0/16",
+                    "Gateway": "172.17.0.1"
+                    
+```
+
+### to check container IP address 
+
+```
+
+]
+[ashu@oraclede alpinetest]$ docker  inspect  ashuc1  --format='{{.Id}}'
+cac7282aa309edef0ec9c71235b4b6dc42b44f69ebb058f5e583351d809bea7a
+[ashu@oraclede alpinetest]$ 
+[ashu@oraclede alpinetest]$ docker  inspect  ashuc1  --format='{{.State.Status}}'
+running
+[ashu@oraclede alpinetest]$ docker  inspect  ashuc1  --format='{{.NetworkSettings.IPAddress}}'
+172.17.0.2
+[ashu@oraclede alpinetest]$ docker  ps
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+e16dd6aaf659        oraclelinux:8.0     "ping localhost"    2 minutes ago       Up 2 minutes                            kiranj
+1c2cb0ab6671        alpine              "ping fb.com"       3 minutes ago       Up 3 minutes                            nikhc1
+00821cafe1ec        karthikwebapp:v1    "catalina.sh run"   3 minutes ago       Up 3 minutes        8080/tcp            karthikwebapp
+56d45f32bee7        ravijava:v1         "catalina.sh run"   3 minutes ago       Up 3 minutes        8080/tcp            RaviJava
+9fac1c2a005e        alpine              "ping localhost"    4 minutes ago       Up 4 minutes                            pavc1
+59425cbd0fc6        alpine              "ping google.com"   4 minutes ago       Up 4 minutes                            prabhathc1
+366e0eeadb1c        alpine              "ping google.com"   5 minutes ago       Up 5 minutes                            sknetworking
+f9ad2ff10a57        alpine              "ping google.com"   5 minutes ago       Up 5 minutes                            shilpac1
+f6eb0e418861        alpine              "ping google.com"   5 minutes ago       Up 5 minutes                            subashc1
+6e719d3b5ebc        busybox:latest      "top"               5 minutes ago       Up 5 minutes                            gunjan_cg1
+aa77fe65f9b4        alpine              "/bin/sh"           5 minutes ago       Up 5 minutes                            kamlesh1
+cac7282aa309        alpine              "ping google.com"   6 minutes ago       Up 6 minutes                            ashuc1
+[ashu@oraclede alpinetest]$ docker  inspect  kiranj --format='{{.NetworkSettings.IPAddress}}'
+172.17.0.13
+
+```
+
+### COntainer Inter connection is by default
+
+```
+ docker  inspect  kiranj --format='{{.NetworkSettings.IPAddress}}'
+172.17.0.13
+[ashu@oraclede alpinetest]$ docker  exec  -it  ashuc1  sh 
+/ # 
+/ # 
+/ # ifconfig 
+eth0      Link encap:Ethernet  HWaddr 02:42:AC:11:00:02  
+          inet addr:172.17.0.2  Bcast:172.17.255.255  Mask:255.255.0.0
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:532 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:513 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0 
+          RX bytes:49836 (48.6 KiB)  TX bytes:48426 (47.2 KiB)
+
+lo        Link encap:Local Loopback  
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          UP LOOPBACK RUNNING  MTU:65536  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)
+
+/ # ping 172.17.0.13
+PING 172.17.0.13 (172.17.0.13): 56 data bytes
+64 bytes from 172.17.0.13: seq=0 ttl=64 time=0.125 ms
+64 bytes from 172.17.0.13: seq=1 ttl=64 time=0.069 ms
+^C
+--- 172.17.0.13 ping statistics ---
+2 packets transmitted, 2 packets received, 0% packet loss
+round-trip min/avg/max = 0.069/0.097/0.125 ms
+/ # exit
+
+```
+
+###  port forwarding in docker engine for container external access 
+
+<img src="portf.png">
+
+### creating container with port forwarding 
+
+```
+ 
+[ashu@oraclede alpinetest]$ docker  run -itd  --name ashuapp1  -p  1100:8080  ashutomcat:v1  
+89e1103658bfecfeb810a2a00b673fa6ab9e533c881a65332d6afbcfc71ac271
+[ashu@oraclede alpinetest]$ docker  ps
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS                    NAMES
+89e1103658bf        ashutomcat:v1       "catalina.sh run"   13 seconds ago      Up 12 seconds       0.0.0.0:1100->8080/tcp   ashuapp1
+[ashu@oraclede alpinetest]$ 
+[ashu@oraclede alpinetest]$ 
+[ashu@oraclede alpinetest]$ docker  ps
+CONTAINER ID        IMAGE               COMMAND             CREATED              STATUS              PORTS                    NAMES
+89e1103658bf        ashutomcat:v1       "catalina.sh run"   About a minute ago   Up About a minute   0.0.0.0:1100->8080/tcp   ashuapp1
+[ashu@oraclede alpinetest]$ 
+
+
+```
+
+### 
+
+```
+271  docker  run -itd  --name ashuapp1  -p  1100:8080  ashutomcat:v1  
+  272  docker  ps
+  273  docker ps
+  274  docker  network  create   ashubr1  --subnet  192.168.1.0/24 
+  275  docker  network  create   ashubr2  --subnet  192.168.2.0/24 
+  276  docker  network  ls
+  277  docker  run -itd --name c1br1  --network  ashubr1  --ip  192.168.1.100  alpine 
+  278  docker  run -itd --name c2br1  --network  ashubr1    alpine
+
+```
 
 
 
