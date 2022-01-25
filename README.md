@@ -172,6 +172,149 @@ bf29d05a87262bfdb322a48cf00dc916520c551ec2ffeaffc356c9f96cee3934
  
 ```
 
+### DockerFile with tomcat 
+
+<img src="tomcat.png">
+
+### Image building with Source code github 
+
+```
+
+ fire@ashutoshhs-MacBook-Air  ~  docker  build -t  ashutomcat:v2 https://github.com/redashu/javawebapp.git
+[+] Building 60.7s (3/8)                                                                                                     
+ => [internal] load git source https://github.com/redashu/javawebapp.git                                                1.4s
+ => [internal] load metadata for docker.io/library/tomcat:latest                                                        5.0s
+ => [auth] library/tomcat:pull token for registry-1.docker.io                                                           0.0s 
+ => [1/5] FROM docker.io/library/tomcat@sha256:90bd265035f2662fa7b882a25f3e20268f7b36babba830852fca3df1e1d063ab        54.2s 
+ => => resolve docker.io/library/tomcat@sha256:90bd2
+ 
+```
+
+### Docker. Hub -- 
+
+<img src="img src="img.png"">
+
+## Repo concept in docker hub 
+
+<img src="dh.png">
+
+## pushing image to docker HUb 
+
+### create repo in docker webui login 
+
+### tag docker host image in std format 
+
+```
+docker  tag  ashutomcat:v1  docker.io/dockerashu/oracleappsjan2022:v1
+
+```
+
+### login to docker hub from client machine 
+
+```
+docker  login  
+Login with your Docker ID to push and pull images from Docker Hub. If you don't have a Docker ID, head over to https://hub.docker.com to create one.
+Username: dockerashu
+Password: 
+WARNING! Your password will be stored unencrypted in /home/ashu/.docker/config.json.
+Configure a credential helper to remove this warning. See
+https://docs.docker.com/engine/reference/commandline/login/#credentials-store
+
+Login Succeeded
+
+```
+
+### pushing image
+
+```
+
+[ashu@oraclede dockerimages]$ docker  push  docker.io/dockerashu/oracleappsjan2022:v1
+The push refers to repository [docker.io/dockerashu/oracleappsjan2022]
+f4a460a28d40: Pushed 
+5365a6a51e77: Pushed 
+7284fcb11e9d: Mounted from library/tomcat 
+6987b0a3f02e: Mounted from library/tomcat 
+59c516e5b6fa: Mounted from library/tomcat 
+3bb5258f46d2: Mounted from library/tomcat 
+832e177bb500: Mounted from library/tomcat 
+f9e18e59a565: Mounted from library/tomcat 
+
+```
+
+### From another docker engine we can pull it 
+
+```
+ 
+ fire@ashutoshhs-MacBook-Air  ~  docker  pull   dockerashu/oracleappsjan2022:v1 
+v1: Pulling from dockerashu/oracleappsjan2022
+0e29546d541c: Downloading [=========>                                         ]  10.75MB/54.92MB
+9b829c73b52b: Download complete 
+cb5b7ae36172: Download complete 
+6494e4811622: Waiting 
+668f6fcc5fa5: Waiting 
+dc120c3e0290: Waiting 
+8f7c0eebb7b1: Waiting 
+77b694f83996: Waiting 
+a8f0d55f21c2: Waiting 
+857166b62264: Waiting 
+ea9ded40e16e: Wait
+
+```
+
+## Image pushing to OCR 
+
+```
+ docker  tag  ashutomcat:v1       phx.ocir.io/axmbtg8judkl/tomcat:appv1  
+[ashu@oraclede dockerimages]$ 
+[ashu@oraclede dockerimages]$ 
+
+
+[ashu@oraclede dockerimages]$ docker  login   phx.ocir.io  
+Username: axmbtg8judkl/learntechbyme@gmail.com
+Password: 
+WARNING! Your password will be stored unencrypted in /home/ashu/.docker/config.json.
+Configure a credential helper to remove this warning. See
+https://docs.docker.com/engine/reference/commandline/login/#credentials-store
+
+Login Succeeded
+
+===
+
+
+[ashu@oraclede dockerimages]$ docker  push  phx.ocir.io/axmbtg8judkl/tomcat:appv1
+The push refers to repository [phx.ocir.io/axmbtg8judkl/tomcat]
+f4a460a28d40: Pushed 
+5365a6a51e77: Pushed 
+7284fcb11e9d: Pushed 
+
+===
+
+
+[ashu@oraclede dockerimages]$ docker  logout  phx.ocir.io 
+Removing login credentials for phx.ocir.io
+[ashu@oraclede dockerimages]$ 
+
+```
+
+### pulling image
+
+```
+
+ fire@ashutoshhs-MacBook-Air  ~     docker  pull  phx.ocir.io/axmbtg8judkl/tomcat:appv1 
+Error response from daemon: Head "https://phx.ocir.io/v2/axmbtg8judkl/tomcat/manifests/appv1": unknown: Unauthorized
+ ✘ fire@ashutoshhs-MacBook-Air  ~  
+
+
+```
+
+### CMD vs Entrypoint 
+
+<img src="ent11.png">
+
+
+
+
+
 
 
 
