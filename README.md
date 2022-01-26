@@ -59,5 +59,21 @@ ping: sendto: Network unreachable
 
 ```
 
+### Docker network --
+
+```
+307  docker  run -itd  --name x1c1  alpine  
+  308  docker  exec -it  x1c1 sh 
+  309  history 
+  310  docker  network  ls
+  311  history 
+  312  docker  network connect  gunjan_brx1  x1c1 
+  313  docker  exec -it  x1c1 sh 
+  314  history 
+  315  docker  network disconnect  gunjan_brx1  x1c1 
+  316  history 
+  
+```
+
 
 
