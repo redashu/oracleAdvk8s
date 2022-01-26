@@ -84,5 +84,113 @@ ping: sendto: Network unreachable
 <img src="overlay.png">
 
 
+### COntiner app deployment problem 
+
+<img src="app1.png">
+
+# COntianer management  /  tools 
+
+<img src="tools.png">
+
+## K8s architecture 
+
+<img src="arch1.png">
+
+### k8s client with kubectl 
+
+[kubectl Download](https://kubernetes.io/docs/tasks/tools/)
+
+<img src="kubectl.png">
+
+
+## K8s master node components -- 
+
+<img src="apiserver.png">
+
+### kubeapi server --
+
+```
+kubectl  cluster-info  --kubeconfig admin.conf.txt 
+Kubernetes control plane is running at https://52.201.159.222:6443
+CoreDNS is running at https://52.201.159.222:6443/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
+
+To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
+
+```
+
+### get nodes 
+
+```
+kubectl  get  nodes   --kubeconfig admin.conf.txt 
+NAME         STATUS   ROLES                  AGE     VERSION
+masternode   Ready    control-plane,master   3h26m   v1.23.3
+node1        Ready    <none>                 3h21m   v1.23.3
+node2        Ready    <none>                 3h21m   v1.23.3
+ fire@ashutoshhs-MacBook-Air  ~/Desktop  
+
+```
+
+### k8s setup
+
+<img src="k8ssetup.png">
+
+### etcd 
+
+<img src="etcd.png">
+
+### copy admin.conf in .kube directory 
+
+```
+ 
+ fire@ashutoshhs-MacBook-Air  ~/Desktop  
+ fire@ashutoshhs-MacBook-Air  ~/Desktop  cp -v  admin.conf.txt  ~/.kube/config
+admin.conf.txt -> /Users/fire/.kube/config
+ fire@ashutoshhs-MacBook-Air  ~/Desktop  
+ fire@ashutoshhs-MacBook-Air  ~/Desktop  
+ fire@ashutoshhs-MacBook-Air  ~/Desktop  
+ fire@ashutoshhs-MacBook-Air  ~/Desktop  
+ fire@ashutoshhs-MacBook-Air  ~/Desktop  
+ fire@ashutoshhs-MacBook-Air  ~/Desktop  
+ fire@ashutoshhs-MacBook-Air  ~/Desktop  
+ fire@ashutoshhs-MacBook-Air  ~/Desktop  kubectl  get  nodes                               
+NAME         STATUS   ROLES                  AGE     VERSION
+masternode   Ready    control-plane,master   3h38m   v1.23.3
+node1        Ready    <none>                 3h33m   v1.23.3
+node2        Ready    <none>                 3h33m   v1.23.3
+
+```
+
+### configure / user kubeconfig file of k8s cluster 
+
+```
+26  kubectl  cluster-info  --kubeconfig admin.conf.txt 
+ 9627  kubectl  get  nodes   --kubeconfig admin.conf.txt 
+ 9628  cp -v  admin.conf.txt  ~/.kube/config
+ 9629  kubectl  get  nodes  
+ 9630  kubectl cluster-info 
+ fire@ashutoshhs-MacBook-Air  ~/Desktop  
+ fire@ashutoshhs-MacBook-Air  ~/Desktop  export KUBECONFIG=/Users/fire/Desktop/admin.conf.txt 
+ 
+```
+
+### kubelet in worker / minion side
+
+<img src="minion1.png">
+
+### deploy in k8s 
+
+<img src="k8sapp.png">
+
+### container 
+
+<img src="container1.png">
+
+## POD concept 
+
+<img src="pod.png">
+
+
+
+
 
 
