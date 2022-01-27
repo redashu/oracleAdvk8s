@@ -445,6 +445,55 @@ ashusvc1   NodePort   10.98.15.147   <none>        1234:32399/TCP   3m3s   x=mya
 
 ```
 
+## Ingress in k8s 
+
+<img src="ingress.png">
+
+### Ingress options -- 
+
+<img src="op.png">
+
+### Nginx ingress deployment URL 
+
+[Ingress](https://kubernetes.github.io/ingress-nginx/deploy/)
+
+### Deploy Ingress in self managed k8s 
+
+```
+ kubectl  apply -f  https://raw.githubusercontent.com/redashu/k8s/ssl/nginx-ingress-controller.yaml
+ 
+ ===
+ 
+ kubectl  get  all -n ingress-nginx
+NAME                                            READY   STATUS      RESTARTS   AGE
+pod/ingress-nginx-admission-create-5v2mj        0/1     Completed   0          62s
+pod/ingress-nginx-admission-patch-m5htx         0/1     Completed   0          62s
+pod/ingress-nginx-controller-65c848c6b5-t5zdj   1/1     Running     0          65s
+
+NAME                                         TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)                      AGE
+service/ingress-nginx-controller             NodePort    10.96.203.178   <none>        80:31052/TCP,443:32501/TCP   66s
+service/ingress-nginx-controller-admission   ClusterIP   10.100.78.133   <none>        443/TCP                      67s
+
+NAME                                       READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/ingress-nginx-controller   1/1     1            1           66s
+
+NAME                                                  DESIRED   CURRENT   READY   AGE
+replicaset.apps/ingress-nginx-controller-65c848c6b5   1         1         1       67s
+
+NAME                                       COMPLETIONS   DURATION   AGE
+job.batch/ingress-nginx-admission-create   1/1           2s         65s
+job.batch/ingress-nginx-admission-patch    1/1           2s         65s
+ fire@ashutoshhs-MacBook-Air  ~  
+ fire@ashutoshhs-MacBook-Air  ~  
+ fire@ashutoshhs-MacBook-Air  ~  kubectl  get  secret -n ingress-nginx 
+NAME                                  TYPE                                  DATA   AGE
+default-token-8dtf4                   kubernetes.io/service-account-token   3      86s
+ingress-nginx-admission               Opaque                                3      79s
+ingress-nginx-admission-token-5gp6r   kubernetes.io/service-account-token   3      82s
+ingress-nginx-token-mwrv5             kubernetes.io/service-account-token   3      86s
+
+```
+
 
 
 
