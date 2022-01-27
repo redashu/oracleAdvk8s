@@ -184,6 +184,55 @@ metadata:
 
 ```
 
+# K8s Networking 
+
+## Host level 
+
+<img src="host1.png">
+
+### adding new minion node 
+
+```
+ 4  hostnamectl set-hostname node3
+    5  yum install docker  -y 
+    6  history 
+    7  systemctl start  docker 
+    8  systemctl enable  docker 
+    9  docker  info 
+   10  cat  <<X  >/etc/docker/daemon.json
+{
+  "exec-opts": ["native.cgroupdriver=systemd"]
+}
+
+X
+
+   11  systemctl daemon-reload 
+   12  systemctl restart docker 
+   13  docker  info 
+   14  history 
+   15  cat  <<EOF  >/etc/yum.repos.d/kube.repo
+[kube]
+baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
+gpgcheck=0
+EOF
+
+   16  yum  install kubeadm -y
+   17  history 
+   18  systemctl enable --now kublet 
+   19  systemctl enable --now kubelet 
+   20  ping  172.31.93.200
+   21  ping  52.201.159.222
+   22  modprobe br_netfilter
+   23  echo '1' > /proc/sys/net/bridge/bridge-nf-call-iptables
+   24  kubeadm join 172.31.93.200:6443 --token yify7m.91s4e3te0eyaj3x8 --discovery-token-ca-cert-hash sha256:e09aaf11cda8095bc11ea4aa32d7cab1db63b5a01f05d8ff1371c814b119f947
+   
+```
+
+## CNI -- 
+
+<img src="cni.png">
+
+
 
 
 
