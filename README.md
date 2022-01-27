@@ -232,6 +232,133 @@ EOF
 
 <img src="cni.png">
 
+### Namespaces 
+
+<img src="ns.png">
+
+### listing 
+
+```
+
+ fire@ashutoshhs-MacBook-Air  ~  
+ fire@ashutoshhs-MacBook-Air  ~  kubectl  get  namespaces  
+NAME                   STATUS   AGE
+default                Active   27h
+kube-node-lease        Active   27h
+kube-public            Active   27h
+kube-system            Active   27h
+kubernetes-dashboard   Active   27h
+ fire@ashutoshhs-MacBook-Air  ~  
+ fire@ashutoshhs-MacBook-Air  ~  
+ fire@ashutoshhs-MacBook-Air  ~  
+ fire@ashutoshhs-MacBook-Air  ~  kubectl  get  pods -n  kube-node-lease 
+No resources found in kube-node-lease namespace.
+ fire@ashutoshhs-MacBook-Air  ~  kubectl  get  pods -n  kube-public     
+No resources found in kube-public namespace.
+ fire@ashutoshhs-MacBook-Air  ~  
+
+
+====
+
+kubectl  get  pods -o wide -n  kube-system 
+NAME                                       READY   STATUS    RESTARTS      AGE   IP               NODE         NOMINATED NODE   READINESS GATES
+calico-kube-controllers-85b5b5888d-w2pjf   1/1     Running   2 (14h ago)   27h   192.168.181.7    masternode   <none>           <none>
+calico-node-gvnhm                          1/1     Running   2 (14h ago)   27h   172.31.93.200    masternode   <none>           <none>
+calico-node-ksq28                          1/1     Running   0             55m   172.31.26.73     node3        <none>           <none>
+calico-node-mmvxk                          1/1     Running   2 (14h ago)   27h   172.31.86.30     node2        <none>           <none>
+calico-node-zsx49                          1/1     Running   2 (14h ago)   27h   172.31.93.17     node1        <none>           <none>
+coredns-64897985d-mrpdj                    1/1     Running   2 (14h ago)   27h   192.168.181.9    masternode   <none>           <none>
+coredns-64897985d-z68p2                    1/1     Running   2 (14h ago)   27h   192.168.181.8    masternode   <none>           <none>
+etcd-masternode                            1/1     Running   2 (14h ago)   28h   172.31.93.200    masternode   <none>           <none>
+kube-apiserver-masternode                  1/1     Running   2
+
+```
+
+### namespace creation ---
+
+```
+kubectl  create  namespace  ashu-project  --dry-run=client -o yaml
+apiVersion: v1
+kind: Namespace
+metadata:
+  creationTimestamp: null
+  name: ashu-project
+spec: {}
+status: {}
+ fire@ashutoshhs-MacBook-Air  ~  kubectl  create  namespace  ashu-project                          
+namespace/ashu-project created
+ fire@ashutoshhs-MacBook-Air  ~  kubectl  get  ns
+NAME                   STATUS   AGE
+ashu-project           Active   8s
+default                Active   28h
+kube-node-lease        Active   28h
+kube-public            Active   28h
+kube-system            Active   28h
+kubernetes-dashboard   Active   28h
+
+```
+
+### setting default namespace --
+
+```
+kubectl  get  pods
+No resources found in default namespace.
+ fire@ashutoshhs-MacBook-Air  ~  kubectl  config set-context --current  --namespace=ashu-project
+Context "kubernetes-admin@kubernetes" modified.
+ fire@ashutoshhs-MacBook-Air  ~  kubectl   config  get-contexts 
+CURRENT   NAME                          CLUSTER      AUTHINFO           NAMESPACE
+*         kubernetes-admin@kubernetes   kubernetes   kubernetes-admin   ashu-project
+ fire@ashutoshhs-MacBook-Air  ~  kubectl  get pods
+No resources found in ashu-project namespace.
+ fire@ashutoshhs-MacBook-Air  ~  
+
+```
+
+### nodejs based docker images 
+
+```
+
+```
+
+### creating pod 
+```
+kubectl  run  ashunodeapp --image=dockerashu/oracle:nodeappv1   --port 3000 --dry-run=client  -o yaml  >nodeapp.yaml
+
+```
+
+### deploy nodeapp in personal namespace 
+
+```
+ 
+ fire@ashutoshhs-MacBook-Air  ~/Desktop/k8sapps  ls
+ashupod1.yaml nodeapp.yaml
+ fire@ashutoshhs-MacBook-Air  ~/Desktop/k8sapps  kubectl apply  -f  nodeapp.yaml 
+pod/ashunodeapp created
+ fire@ashutoshhs-MacBook-Air  ~/Desktop/k8sapps  kubectl  get  pods
+NAME          READY   STATUS    RESTARTS   AGE
+ashunodeapp   1/1     Running   0          10s
+
+```
+
+### access app locally
+
+```
+ 
+ fire@ashutoshhs-MacBook-Air  ~  kubectl  get  po 
+NAME          READY   STATUS    RESTARTS   AGE
+ashunodeapp   1/1     Running   0          2m31s
+ fire@ashutoshhs-MacBook-Air  ~  
+ fire@ashutoshhs-MacBook-Air  ~  kubectl  port-forward  ashunodeapp  1122:3000  
+Forwarding from 127.0.0.1:1122 -> 3000
+Forwarding from [::1]:1122 -> 3000
+Handling connection for 1122
+Handling connection for 1122
+Handling connection for 1122
+Handling connection for 1122
+Handling connection for 1122
+Handling connection for 1122
+
+```
 
 
 
