@@ -360,6 +360,92 @@ Handling connection for 1122
 
 ```
 
+### kubectl port forward 
+
+<img src="portf.png">
+
+## Intro to service in k8s 
+
+<img src="svc.png">
+
+### service will use label to find pods 
+
+<img src="label.png">
+
+## service type in k8s
+
+<img src="svctype.png">
+
+### Nodeport service understanding 
+
+<img src="np.png">
+
+### checking label of pod 
+
+```
+kubectl apply -f nodeapp.yaml 
+pod/ashunodeapp configured
+ fire@ashutoshhs-MacBook-Air  ~/Desktop/k8sapps  kubectl  get po 
+NAME          READY   STATUS    RESTARTS   AGE
+ashunodeapp   1/1     Running   0          134m
+ fire@ashutoshhs-MacBook-Air  ~/Desktop/k8sapps  kubectl  get po  --show-labels
+NAME          READY   STATUS    RESTARTS   AGE    LABELS
+ashunodeapp   1/1     Running   0          134m   x=myapp1
+
+```
+
+### creating service of nodeport type 
+
+```
+kubectl  create  service  
+Create a service using a specified subcommand.
+
+Aliases:
+service, svc
+
+Available Commands:
+  clusterip    Create a ClusterIP service
+  externalname Create an ExternalName service
+  loadbalancer Create a LoadBalancer service
+  nodeport     Create a NodePort service
+
+====
+
+kubectl  create  service    nodeport   ashusvc1  --tcp  1234:3000  --dry-run=client -o yaml 
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: ashusvc1
+  name: ashusvc1
+spec:
+  ports:
+  - name: 1234-3000
+    port: 1234
+
+
+```
+
+### creating service 
+
+```
+kubectl  get  po --show-labels
+NAME          READY   STATUS    RESTARTS   AGE    LABELS
+ashunodeapp   1/1     Running   0          146m   x=myapp1
+ fire@ashutoshhs-MacBook-Air  ~/Desktop/k8sapps  
+ fire@ashutoshhs-MacBook-Air  ~/Desktop/k8sapps  kubectl  get  service 
+NAME       TYPE       CLUSTER-IP     EXTERNAL-IP   PORT(S)          AGE
+ashusvc1   NodePort   10.98.15.147   <none>        1234:32399/TCP   2m1s
+ fire@ashutoshhs-MacBook-Air  ~/Desktop/k8sapps  kubectl  get  service -o wide
+NAME       TYPE       CLUSTER-IP     EXTERNAL-IP   PORT(S)          AGE    SELECTOR
+ashusvc1   NodePort   10.98.15.147   <none>        1234:32399/TCP   3m3s   x=myapp1
+ fire@ashutoshhs-MacBook-Air  ~/Desktop/k8sapps  
+
+
+```
+
+
 
 
 
