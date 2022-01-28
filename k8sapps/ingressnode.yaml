@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+ name: nodeapp-rule
+ annotations:
+  nginx.ingress.kubernetes.io/rewrite-target: / 
+spec:
+  ingressClassName: nginx # newer nginx ingress version 
+  rules:
+  - host: "scale.ashutoshh.in"
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/oracle"
+        backend:
+          service:
+            name: ashusvc1
+            port:
+              number: 3000
+      - pathType: Prefix
+        path: "/india"
+        backend:
+          service:
+            name: ashusvc2
+            port:
+              number: 80
