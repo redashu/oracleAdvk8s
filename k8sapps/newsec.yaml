@@ -1,0 +1,9 @@
+apiVersion: v1
+data:
+  sql_password: T3JhY2xlZGIwODg=
+kind: Secret
+metadata:
+  name: dbsec1
+  namespace: ashu-project
+  
+type: Opaque
