@@ -215,6 +215,79 @@ ashusvc1   NodePort   10.111.33.32    <none>        3000:31148/TCP   89m
 ashusvc2   NodePort   10.109.155.45   <none>        80:31578/TCP     5s
 
 ```
+### HPA 
+
+```
+kubectl  get deploy      
+NAME       READY   UP-TO-DATE   AVAILABLE   AGE
+httpapp    1/1     1            1           26m
+nginxapp   1/1     1            1           27m
+ fire@ashutoshhs-MacBook-Air  ~  
+ fire@ashutoshhs-MacBook-Air  ~  
+ fire@ashutoshhs-MacBook-Air  ~  kubectl autoscale deployment nginxapp  --min=3 --max=10  --cpu-percent=80 
+horizontalpodautoscaler.autoscaling/nginxapp autoscaled
+ fire@ashutoshhs-MacBook-Air  ~  
+ fire@ashutoshhs-MacBook-Air  ~  kubectl autoscale deployment httpapp  --min=2 --max=20  --cpu-percent=80 
+horizontalpodautoscaler.autoscaling/httpapp autoscaled
+ fire@ashutoshhs-MacBook-Air  ~  
+ fire@ashutoshhs-MacBook-Air  ~  kubectl get  hpa
+NAME       REFERENCE             TARGETS         MINPODS   MAXPODS   REPLICAS   AGE
+httpapp    Deployment/httpapp    <unknown>/80%   2         20        0          5s
+nginxapp   Deployment/nginxapp   <unknown>/80%   3         10        1          18s
+ fire@ashutoshhs-MacBook-Air  ~  kubectl get  deploy 
+NAME       READY   UP-TO-DATE   AVAILABLE   AGE
+httpapp    1/1     1            1           28m
+nginxapp   3/3     3            3           28m
+ fire@ashutoshhs-MacBook-Air  ~  kubectl get  deploy 
+NAME       READY   UP-TO-DATE   AVAILABLE   AGE
+httpapp    2/2     2            2           28m
+nginxapp   3/3     3            3           28m
+
+
+```
+
+### SSL understanding --
+
+<img src="ssl.png">
+
+### creating self sign cert 
+
+```
+openssl req -x509 -newkey rsa:4096 -keyout private.pem -out  ashuweb.cert -days  365  -nodes 
+Generating a 4096 bit RSA private key
+................++
+....................................................++
+writing new private key to 'private.pem'
+-----
+You are about to be asked to enter information that will be incorporated
+into your certificate request.
+What you are about to enter is what is called a Distinguished Name or a DN.
+There are quite a few fields but you can leave some blank
+For some fields there will be a default value,
+If you enter '.', the field will be left blank.
+-----
+Country Name (2 letter code) []:IN
+State or Province Name (full name) []:RAJ
+Locality Name (eg, city) []:JAIPUR
+Organization Name (eg, company) []:ADHOC NETworks 
+Organizational Unit Name (eg, section) []:tech
+Common Name (eg, fully qualified host name) []:ashu-secure.com   
+Email Address []:
+
+```
+
+### create secret -- to store CERT 
+
+```
+kubectl create secret tls ashuapp --cert=ashuweb.cert --key=private.pem
+secret/ashuapp created
+ fire@ashutoshhs-MacBook-Air  ~/Desktop  kubectl get secret 
+NAME                  TYPE                                  DATA   AGE
+ashuapp               kubernetes.io/tls                     2      7s
+ashusec               kubernetes.io/dockerconfigjson        1      3h26m
+default-token-mqz52   kubernetes.io/service-account-token   3      26h
+
+```
 
 
 
