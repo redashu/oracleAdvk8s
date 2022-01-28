@@ -1,0 +1,55 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  creationTimestamp: null
+  name: x1
+spec: {}
+status: {}
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: ashuapp
+  name: ashuapp # name of deployment 
+  namespace: x1 # name space info 
+spec:
+  replicas: 1 # number of pod we want 
+  selector:
+    matchLabels:
+      app: ashuapp
+  strategy: {}
+  template: # this is pod template --
+    metadata:
+      creationTimestamp: null
+      labels: # label of pod 
+        app: ashuapp
+    spec:
+      containers:
+      - image: dockerashu/oraclenode:v1
+        name: oraclenode
+        resources: {}
+status: {}
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: s1
+  name: s1
+  namespace: x1
+spec:
+  ports:
+  - name: 1234-3000
+    port: 1234
+    protocol: TCP
+    targetPort: 3000
+  selector:
+    app: ashuapp
+  type: NodePort
+status:
+  loadBalancer: {}
