@@ -119,6 +119,103 @@ deployment.apps "ashuapp" deleted
 service "s1" deleted
 
 ```
+## Ingress example 
+
+<img src="ingress.png">
+
+### pushing image to OCR --
+
+```
+docker images
+REPOSITORY               TAG       IMAGE ID       CREATED         SIZE
+dockerashu/oraclenginx   v1        ac0b57d4b4ad   6 minutes ago   142MB
+ubuntu                   latest    d13c942271d6   3 weeks ago     72.8MB
+alpine                   latest    c059bfaa849c   2 months ago    5.59MB
+ fire@ashutoshhs-MacBook-Air  ~  
+ fire@ashutoshhs-MacBook-Air  ~  
+ fire@ashutoshhs-MacBook-Air  ~  
+ fire@ashutoshhs-MacBook-Air  ~  docker  tag     ac0b57d4b4ad        phx.ocir.io/axmbtg8judkl/htmlapp:v1
+ fire@ashutoshhs-MacBook-Air  ~  docker  images
+REPOSITORY                         TAG       IMAGE ID       CREATED         SIZE
+dockerashu/oraclenginx             v1        ac0b57d4b4ad   6 minutes ago   142MB
+phx.ocir.io/axmbtg8judkl/htmlapp   v1        ac0b57d4b4ad   6 minutes ago   142MB
+ubuntu                             latest    d13c942271d6   3 weeks ago     72.8MB
+alpine                             latest    c059bfaa849c   2 months ago    5.59MB
+ fire@ashutoshhs-MacBook-Air  ~  docker  login -u   axmbtg8judkl/learntechbyme@gmail.com  
+Password: 
+ ✘ fire@ashutoshhs-MacBook-Air  ~  docker  login  phx.ocir.io -u   axmbtg8judkl/learntechbyme@gmail.com  
+Password: 
+Login Succeeded
+ fire@ashutoshhs-MacBook-Air  ~  docker push  phx.ocir.io/axmbtg8judkl/htmlapp:v1
+The push refers to repository [phx.ocir.io/axmbtg8judkl/htmlapp]
+a5dc12e92364: Pushing [==================================================>]  1.006MB
+762b147902c0: Pushing [==================================================>]  7.168kB
+235e04e3592a: Pushing [==================================================>]  3.584kB
+6173b6fa63db: Pushing [==================================================>]  4.096kB
+
+```
+
+### Deploy above image from OCR --
+
+```
+kubectl  create  deployment  sampleapp --image=phx.ocir.io/axmbtg8judkl/htmlapp:v1   --dry-run=client -o yaml  >htmldeploy.yaml 
+
+```
+
+## secret in k8s --- 
+
+<img src="secret.png">
+
+### creating secret --
+
+```
+kubectl  create  secret  
+Create a secret using specified subcommand.
+
+Available Commands:
+  docker-registry Create a secret for use with a Docker registry
+  generic         Create a secret from a local file, directory, or literal value
+  tls             Create a TLS secret
+
+Usage:
+
+
+====
+
+kubectl  create  secret  docker-registry  ashusec  --docker-server=phx.ocir.io            --docker-username=axmbtg8judkl/learntechbyme@gmail.com  --docker-password="Z-M5w]j89Hzy.ke.fU[Y"                           secret/ashusec created
+ fire@ashutoshhs-MacBook-Air  ~  kubectl  get secret 
+NAME                  TYPE                                  DATA   AGE
+ashusec               kubernetes.io/dockerconfigjson        1      6s
+default-token-mqz52   kubernetes.io/service-account-token   3      23h
+
+```
+
+### ---  expose deply 
+
+```
+ 
+ fire@ashutoshhs-MacBook-Air  ~  kubectl  get deploy
+NAME        READY   UP-TO-DATE   AVAILABLE   AGE
+ashuapp     3/3     3            3           103m
+sampleapp   2/2     2            2           42m
+ fire@ashutoshhs-MacBook-Air  ~  kubectl  get deploy
+NAME        READY   UP-TO-DATE   AVAILABLE   AGE
+ashuapp     3/3     3            3           106m
+sampleapp   2/2     2            2           46m
+ fire@ashutoshhs-MacBook-Air  ~  kubectl  get  svc
+NAME       TYPE       CLUSTER-IP     EXTERNAL-IP   PORT(S)          AGE
+ashusvc1   NodePort   10.111.33.32   <none>        3000:31148/TCP   89m
+ fire@ashutoshhs-MacBook-Air  ~  kubect  expose deploy sampleapp  --type NodePort --port 80 --name ashusvc2 
+zsh: command not found: kubect
+ ✘ fire@ashutoshhs-MacBook-Air  ~  kubectl  expose deploy sampleapp  --type NodePort --port 80 --name ashusvc2 
+service/ashusvc2 exposed
+ fire@ashutoshhs-MacBook-Air  ~  kubectl  get  svc 
+NAME       TYPE       CLUSTER-IP      EXTERNAL-IP   PORT(S)          AGE
+ashusvc1   NodePort   10.111.33.32    <none>        3000:31148/TCP   89m
+ashusvc2   NodePort   10.109.155.45   <none>        80:31578/TCP     5s
+
+```
+
 
 
 
