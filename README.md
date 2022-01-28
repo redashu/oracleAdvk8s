@@ -289,6 +289,34 @@ default-token-mqz52   kubernetes.io/service-account-token   3      26h
 
 ```
 
+## Storage in k8s --
+
+<img src="storage.png">
+
+### Storage with app
+
+<img src="app22.png">
+
+## CREATE APP --
+
+### create database model 
+
+```
+kubectl  create deployment ashudb --image=mysql:5.6 --dry-run=client -o yaml
+
+====
+
+kubectl  create secret  generic  dbsec  --from-literal  sql_password=Oracledb088          --dry-run=client -o yaml 
+apiVersion: v1
+data:
+  sql_password: T3JhY2xlZGIwODg=
+kind: Secret
+metadata:
+  creationTimestamp: null
+  name: dbsec
+
+```
+
 
 
 
