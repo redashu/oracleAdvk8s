@@ -317,6 +317,36 @@ metadata:
 
 ```
 
+### Db deployment 
+
+```
+ kubectl apply -f webdbapp.yaml                  
+deployment.apps/ashudb created
+secret/dbsec created
+ fire@ashutoshhs-MacBook-Air  ~/Desktop/k8sapps  kubectl  get deploy
+NAME     READY   UP-TO-DATE   AVAILABLE   AGE
+ashudb   1/1     1            1           2m
+ fire@ashutoshhs-MacBook-Air  ~/Desktop/k8sapps  kubectl  get po 
+NAME                     READY   STATUS    RESTARTS   AGE
+ashudb-59949cfdd-dd8l7   1/1     Running   0          2m5s
+ fire@ashutoshhs-MacBook-Air  ~/Desktop/k8sapps  kubectl  get  secret 
+NAME                  TYPE                                  DATA   AGE
+ashuapp               kubernetes.io/tls                     2      87m
+ashusec               kubernetes.io/dockerconfigjson        1      4h54m
+dbsec                 Opaque                                1      2m8s
+default-token-mqz52   kubernetes.io/service-account-token   3      28h
+
+```
+
+### --
+
+```
+kubectl apply -f webdbapp.yaml 
+deployment.apps/ashudb configured
+secret/dbsec configured
+service/ashudb created
+
+```
 
 
 
