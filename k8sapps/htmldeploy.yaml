@@ -22,5 +22,11 @@ spec:
       containers:
       - image: phx.ocir.io/axmbtg8judkl/htmlapp:v1
         name: htmlapp
-        resources: {}
+        resources:
+         requests:
+          memory: 200M # memory default limit 
+          cpu: 200m # cpu core -- 1 vcpu -- 1000 Mili core 
+         limits:
+          memory: 500M 
+          cpu: 300m 
 status: {}

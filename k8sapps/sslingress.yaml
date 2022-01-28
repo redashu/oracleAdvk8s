@@ -1,0 +1,30 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+ name: myingressrule1
+ annotations:
+  nginx.ingress.kubernetes.io/rewrite-target: / 
+spec:
+  ingressClassName: nginx # newer nginx ingress version 
+  tls: # only for tls based traffic 
+  - hosts: 
+    - ashu-secure.com
+    secretName: ashuapp
+  rules:
+  -  host: ashu-secure.com 
+     http:
+      paths:
+      - pathType: Prefix
+        path: "/oracle"
+        backend:
+          service:
+            name: ngs1
+            port:
+              number: 80
+      - pathType: Prefix
+        path: "/india"
+        backend:
+          service:
+            name: https1
+            port:
+              number: 80

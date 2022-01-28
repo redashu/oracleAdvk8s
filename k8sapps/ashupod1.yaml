@@ -12,3 +12,4 @@ spec:
  - name: ashuc1 # name of container 
    image: alpine # will be pulled from docker hub 
    command: ["sh","-c","ping google.com"]
+   
